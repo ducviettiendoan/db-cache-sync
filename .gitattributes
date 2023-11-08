@@ -1,4 +1,4 @@
-# *.yml linguist-detectable=true
+docket-compose.yml linguist-detectable=true
 *.yml linguist-language=YAML
 # *.dockerfile linguist-detectable=true
 # *.dockerfile linguist-language=Dockerfile
