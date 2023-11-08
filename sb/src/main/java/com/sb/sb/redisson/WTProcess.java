@@ -36,7 +36,7 @@ import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.map.MapLoader;
 import org.redisson.api.map.MapWriter;
-
+import org.redisson.config.Config;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -79,9 +79,11 @@ public class WTProcess {
     public CompletableFuture<WTProcess> runWT() throws IOException, ClassNotFoundException, SQLException {
         //Setup Properties for consumer
         Properties kafkaProps = new Properties();
+        System.out.println("NEW PROPERTIES");
         //List of Kafka brokers to connect to
         kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092,localhost:9093,localhost:9094");
+                "kafka1:29092,kafka2:29093,kafka3:29094");
+        System.out.println("CONNECT TO 3 KAFKA BROKER");
         //Deserializer class to convert Keys from Byte Array to String
         kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 "org.apache.kafka.common.serialization.StringDeserializer");
@@ -91,6 +93,7 @@ public class WTProcess {
         //Consumer Group ID for this consumer
         kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG,
                 "kafka-consumer-group-2");
+        System.out.println("CREATE GROUP ID");
         //Set to consume from the earliest message, on start when no offset is
         //available in Kafka
         kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
@@ -99,13 +102,16 @@ public class WTProcess {
         KafkaConsumer<String, String> simpleConsumer = new KafkaConsumer<String, String>(kafkaProps);
 
         //Subscribe to the kafka.learning.orders topic
-        simpleConsumer.subscribe(Arrays.asList("kafka.cache_wt"));
+        simpleConsumer.subscribe(Arrays.asList("kafka.cache-wt"));
+        System.out.println("CREATE CONSUMER");
         
         // connects to 127.0.0.1:6379 by default
-        RedissonClient redisson = Redisson.create();
-        
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/student", "postgres", "ducdoanp0stgre");
-        
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://cache:6379");
+        RedissonClient redisson = Redisson.create(config);
+        System.out.println("REDISSON CONNNECT REDIS");
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://db:5432/student", "postgres", "ducdoanp0stgre");
+        System.out.println("REDISSON CONNECT POSTGRES");
         MapWriter<String, String> mapWriter = new MapWriter<String, String>() {
             
             @Override
@@ -195,7 +201,7 @@ public class WTProcess {
                 MapOptions.<String, String>defaults()
                     .writer(mapWriter)
                     .loader(mapLoader);
-        
+        System.out.println("@@@@@@@READY TO POLL@@@@@@@");
         while(true) {
 
             //Poll with timeout of 100 milli seconds

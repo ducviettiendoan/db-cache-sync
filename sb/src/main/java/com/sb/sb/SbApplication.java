@@ -221,5 +221,6 @@ public class SbApplication{
 
 		//join threads
 		CompletableFuture.allOf(t1,t2).join();
+		// CompletableFuture.allOf(t2).join();
 	}
 }

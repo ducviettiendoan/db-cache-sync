@@ -53,7 +53,7 @@ public class Consumer {
 
         //List of Kafka brokers to connect to
         kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092,localhost:9093,localhost:9094");
+                "kafka1:29092,kafka2:29093,kafka3:29094");
 
         //Deserializer class to convert Keys from Byte Array to String
         kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
@@ -77,7 +77,7 @@ public class Consumer {
                 new KafkaConsumer<String, String>(kafkaProps);
 
         //Subscribe to the kafka.learning.orders topic
-        simpleConsumer.subscribe(Arrays.asList("kafka.postgres_modify"));
+        simpleConsumer.subscribe(Arrays.asList("kafka.postgres-modify"));
 
         //Continuously poll for new messages
         while(true) {
