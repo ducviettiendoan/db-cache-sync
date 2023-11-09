@@ -8,8 +8,6 @@ services:
   db:
     image: postgres:latest
     restart: always
-    # volumes:
-    #   - ~/apps/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=student
       - POSTGRES_USER=postgres
@@ -82,7 +80,6 @@ services:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
       - ALLOW_PLAINTEXT_LISTENER=yes
-      # - KAFKA_CREATE_TOPICS="kafka.cache_wt:3:3,kafka.postgres_modify:3:3"
       
     container_name: kafka-broker1
     
@@ -142,8 +139,8 @@ services:
     ports:
       - '9095:9095'
     command: >
-      /bin/bash -c "/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 3 --partitions 3 --if-not-exists --topic kafka.cache-wt &&
-      /opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 3 --partitions 3 --if-not-exists --topic kafka.postgres-modify"
+      /bin/bash -c "/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 2 --partitions 3 --if-not-exists --topic kafka.cache-wt &&
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 2 --partitions 3 --if-not-exists --topic kafka.postgres-modify"
     networks:
       - kafka-net  
 #KafDrop UI for management

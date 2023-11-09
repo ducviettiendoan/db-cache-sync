@@ -71,6 +71,8 @@ public class Consumer {
         //available in Kafka
         kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
+        
+        kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
 
         //Create a Consumer
         KafkaConsumer<String, String> simpleConsumer =
@@ -93,6 +95,7 @@ public class Consumer {
                 System.out.println("---Receive massage from Kafka--- Name: " + messageStudent.getName()+" "+"Age: "+messageStudent.getAge());
                 processMessage(messageStudent);
             }
+            simpleConsumer.commitAsync();
         }
     }
 }

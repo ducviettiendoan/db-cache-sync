@@ -90,6 +90,9 @@ public class SbApplication{
 		//Student obj to write cache
 		Student studentW = dbRes.get();
 		String serializeS = sdo.toString(studentW);
+		if (template.opsForHash().hasKey(STRING_KEY_PREFIX, "key"+studentW.getId())){
+			return dbRes;
+		}
 		template.opsForHash().put(STRING_KEY_PREFIX,"key"+studentW.getId(),serializeS);
 		System.out.println("Write key"+studentW+" complete");
 		return dbRes;
@@ -101,6 +104,18 @@ public class SbApplication{
 		// HttpStatusCode dbRes = studentService.addStudent(newStudent);
 		String serializeS = sdo.toString(newStudent);
 		try{
+			//check existing value of key...field in Redis
+			// if (template.opsForHash().hasKey(STRING_KEY_PREFIX, "key"+newStudent.getId())){
+			// 	return HttpStatusCode.valueOf(409);
+			// }
+
+			//check directly to the db if the id already exist.
+			Optional<Student> dbRes = studentService.getStudentById(newStudent.getId());
+			if (dbRes.isPresent()){
+				System.out.println("Obj exists in db already");
+				return HttpStatusCode.valueOf(409);
+			}
+			//if id not exist -> DB should be able to process Kafka message of new student -> start WT process
 			template.opsForHash().put(STRING_KEY_PREFIX,"key"+newStudent.getId(),serializeS);
 			System.out.println("Write through to cache success");
 			producer.runProd(newStudent);

@@ -98,6 +98,9 @@ public class WTProcess {
         //available in Kafka
         kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
                 "earliest");
+
+        kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+
         //Create a Consumer
         KafkaConsumer<String, String> simpleConsumer = new KafkaConsumer<String, String>(kafkaProps);
 
@@ -215,6 +218,7 @@ public class WTProcess {
                 RMap<String, String> map =  redisson.getMap(STRING_KEY_PREFIX, options);
                 map.put("key", message.value());
             }
+            simpleConsumer.commitAsync();
         }
         
         // redisson.shutdown();
