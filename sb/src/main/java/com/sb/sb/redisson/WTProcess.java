@@ -43,6 +43,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -72,6 +73,15 @@ public class WTProcess {
     //Qualifier make sure template choosing is correct
     @Qualifier("redisTemplate")
 	private RedisTemplate<String,String> template;
+
+    @Value("${spring.datasource.username}")
+    private String DB_USERNAME;
+
+    @Value("${spring.datasource.password}")
+    private String DB_PASSWORD;
+
+    @Value("${spring.datasource.url}")
+    private String DB_URL;
 
 
     @Async
@@ -110,10 +120,10 @@ public class WTProcess {
         
         // connects to 127.0.0.1:6379 by default
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://cache:6379");
+        config.useSingleServer().setAddress("redis://cache:6379"); 
         RedissonClient redisson = Redisson.create(config);
         System.out.println("REDISSON CONNNECT REDIS");
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://db:5432/student", "postgres", "ducdoanp0stgre");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
         System.out.println("REDISSON CONNECT POSTGRES");
         MapWriter<String, String> mapWriter = new MapWriter<String, String>() {
             
