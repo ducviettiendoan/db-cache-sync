@@ -9,9 +9,9 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_USER=postgres
+      - DB_USER=${DB_USERNAME}
       - DB_NAME=student
-      - DB_PASSWORD=ducdoanp0stgre
+      - DB_PASSWORD=${DB_PASSWORD}
       - KAFKA_BROKERCONNECT=kafka1:29092,kafka2:29093,kafka3:29094
       - JVM_OPTS=-Xms32M -Xmx64M
       - SERVER_SERVLET_CONTEXTPATH=/

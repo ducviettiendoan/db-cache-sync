@@ -10,8 +10,8 @@ services:
     restart: always
     environment:
       - POSTGRES_DB=student
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=ducdoanp0stgre
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5432:5432"
     networks:
@@ -34,9 +34,9 @@ services:
     environment:
       - DB_HOST=db
       - DB_PORT=5432
-      - DB_USER=postgres
+      - DB_USER=${DB_USERNAME}
       - DB_NAME=student
-      - DB_PASSWORD=ducdoanp0stgre
+      - DB_PASSWORD=${DB_PASSWORD}
       - KAFKA_BROKERCONNECT=kafka1:29092,kafka2:29093,kafka3:29094
       - JVM_OPTS=-Xms32M -Xmx64M
       - SERVER_SERVLET_CONTEXTPATH=/
@@ -66,6 +66,8 @@ services:
 
 #Kafka Service
 #Image Tag: bitnami/kafka:2.7.0
+# sed -i 's/^offset.retention.minutes=.*/offset.retention.minutes=1/' /opt/bitnami/kafka/config/server.properties && configs:
+#/opt/bitnami/ctlscript.sh restart kafka"
 
   kafka1:
     image: 'bitnami/kafka:latest'
@@ -138,9 +140,12 @@ services:
     image: 'bitnami/kafka:latest'
     ports:
       - '9095:9095'
+    #command set topic wtih configs + add retentions for topic to get rid of error message 
     command: >
       /bin/bash -c "/opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 2 --partitions 3 --if-not-exists --topic kafka.cache-wt &&
-      /opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 2 --partitions 3 --if-not-exists --topic kafka.postgres-modify"
+      /opt/bitnami/kafka/bin/kafka-topics.sh --create --bootstrap-server kafka2:29093 --replication-factor 2 --partitions 3 --if-not-exists --topic kafka.postgres-modify &&
+      /opt/bitnami/kafka/bin/kafka-configs.sh --bootstrap-server kafka2:29093 --alter --entity-type topics --entity-name kafka.cache-wt --add-config retention.ms=1440000"
+
     networks:
       - kafka-net  
 #KafDrop UI for management
