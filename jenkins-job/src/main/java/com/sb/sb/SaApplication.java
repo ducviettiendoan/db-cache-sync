@@ -26,25 +26,25 @@ public class SaApplication {
 	@Autowired
 	StudentService studentService;
 
-	@Autowired
-	Producer prod;
+	// @Autowired
+	// Producer prod;
 
 	@GetMapping("/students")
 	public List<Student> getAllStudents(){
 		return studentService.getAllStudents();
 	}
 
-	//do not need to write to cache because the next read to this added student to db will be CACHE miss.
-	@PostMapping(path="/student/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public HttpStatusCode addStudent(@RequestBody Student newStudent) throws IOException{
-		HttpStatusCode dbRes = studentService.addStudent(newStudent);
-		if (dbRes.value() == 200){
-			Producer prod = new Producer();
-			prod.configProd();
-			prod.runProd(newStudent);
-		}
-		return dbRes;
-	}
+	// //do not need to write to cache because the next read to this added student to db will be CACHE miss.
+	// @PostMapping(path="/student/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+	// public HttpStatusCode addStudent(@RequestBody Student newStudent) throws IOException{
+	// 	HttpStatusCode dbRes = studentService.addStudent(newStudent);
+	// 	if (dbRes.value() == 200){
+	// 		Producer prod = new Producer();
+	// 		prod.configProd();
+	// 		prod.runProd(newStudent);
+	// 	}
+	// 	return dbRes;
+	// }
 
 	public static void main(String[] args) {
 		SpringApplication.run(SaApplication.class, args);
