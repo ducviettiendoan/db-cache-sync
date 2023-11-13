@@ -93,7 +93,14 @@ public class Consumer {
                 System.out.println(message.value());
                 Student messageStudent = (Student)sdo.fromString(message.value());
                 System.out.println("---Receive massage from Kafka--- Name: " + messageStudent.getName()+" "+"Age: "+messageStudent.getAge());
-                processMessage(messageStudent);
+                try{
+                    processMessage(messageStudent);
+                    System.out.println("WRITE TO CACHE");
+                    simpleConsumer.commitAsync();
+                }catch(Exception e){
+                    System.out.println("Cannot Write, EXIT");
+                    simpleConsumer.commitAsync();
+                }
             }
             simpleConsumer.commitAsync();
         }

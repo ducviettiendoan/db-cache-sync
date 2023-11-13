@@ -110,11 +110,11 @@ public class SbApplication{
 			// }
 
 			//check directly to the db if the id already exist.
-			Optional<Student> dbRes = studentService.getStudentById(newStudent.getId());
-			if (dbRes.isPresent()){
-				System.out.println("Obj exists in db already");
-				return HttpStatusCode.valueOf(409);
-			}
+			// Optional<Student> dbRes = studentService.getStudentById(newStudent.getId());
+			// if (dbRes.isPresent()){
+			// 	System.out.println("Obj exists in db already");
+			// 	return HttpStatusCode.valueOf(409);
+			// }
 			//if id not exist -> DB should be able to process Kafka message of new student -> start WT process
 			template.opsForHash().put(STRING_KEY_PREFIX,"key"+newStudent.getId(),serializeS);
 			System.out.println("Write through to cache success");

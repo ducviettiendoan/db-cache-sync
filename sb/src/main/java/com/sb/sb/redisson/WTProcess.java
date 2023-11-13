@@ -219,18 +219,22 @@ public class WTProcess {
 
             //Poll with timeout of 100 milli seconds
             ConsumerRecords<String, String> messages =
-                    simpleConsumer.poll(Duration.ofMillis(100));
-
+                    simpleConsumer.poll(Duration.ofMillis(1000));
             //Print batch of records consumed
             for (ConsumerRecord<String, String> message : messages){
                 System.out.println(message.value());
                 System.out.println("---Receive massage from Kafka--- Value: " + message);
                 RMap<String, String> map =  redisson.getMap(STRING_KEY_PREFIX, options);
-                map.put("key", message.value());
+                try{
+                    map.put("key", message.value());
+                    System.out.println("WRITE TO DB RES");
+                    simpleConsumer.commitAsync();
+                }catch(Exception e){
+                    System.out.println("Cannot Write, EXIT");
+                    simpleConsumer.commitAsync();
+                }
             }
-            simpleConsumer.commitAsync();
         }
-        
         // redisson.shutdown();
     }
     
