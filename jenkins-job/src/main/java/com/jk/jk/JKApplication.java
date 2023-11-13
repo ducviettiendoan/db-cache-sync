@@ -1,4 +1,4 @@
-package com.sb.sb;
+package com.jk.jk;
 
 import java.io.IOException;
 import java.util.*;
@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sb.sb.kafka.Producer;
-import com.sb.sb.student.Student;
-import com.sb.sb.student.StudentService;
+import com.jk.jk.student.Student;
+import com.jk.jk.student.StudentService;
 
 import org.springframework.http.MediaType;
 
 @SpringBootApplication
 @RestController
 @RequestMapping("/")
-public class SaApplication {
+public class JKApplication {
 	@Autowired
 	StudentService studentService;
 
@@ -47,7 +46,7 @@ public class SaApplication {
 	// }
 
 	public static void main(String[] args) {
-		SpringApplication.run(SaApplication.class, args);
+		SpringApplication.run(JKApplication.class, args);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.sb.sb.privacy;
+package com.jk.jk.privacy;
 
 import java.util.*;
 import org.springframework.stereotype.Service;

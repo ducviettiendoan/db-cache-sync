@@ -36,11 +36,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_2.13</artifactId>
             <version>2.7.0</version>
-        </dependency>
+        </dependency> -->
 	</dependencies>
 
 	<build>
