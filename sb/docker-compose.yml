@@ -45,7 +45,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8085:8085"
     restart: on-failure:10
     networks:
       - kafka-net

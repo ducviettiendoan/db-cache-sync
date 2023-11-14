@@ -5,7 +5,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Service;
 
-import com.sb.sb.redis.SDObject;
+import com.SDObject;
 import com.sb.sb.student.Student;
 
 import java.util.Properties;

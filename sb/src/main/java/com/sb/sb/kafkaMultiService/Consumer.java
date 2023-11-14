@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.sb.sb.redis.SDObject;
+import com.SDObject;
 import com.sb.sb.redis.StudentRedisConfig;
 import com.sb.sb.student.Student;
 
