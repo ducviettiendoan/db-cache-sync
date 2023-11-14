@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
-@ContextConfiguration(classes = JKApplication.class) 
+// @ContextConfiguration(classes = JKApplication.class) 
 class JKApplicationTests {
 
 	@Test

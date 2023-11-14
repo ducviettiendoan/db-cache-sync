@@ -1,4 +1,4 @@
-package com.jk.jk.privacy;
+package com;
 
 import java.util.*;
 import org.springframework.stereotype.Service;
@@ -9,10 +9,10 @@ import java.io.*;
 public class SDObject {
     public static void main(String[] args) throws IOException {}
     /** Read the object from Base64 string. */
-   public Object fromString( String s ) throws IOException , ClassNotFoundException {
+   public Object fromString( String s ) throws IOException,ClassNotFoundException {
         byte [] data = Base64.getDecoder().decode( s );
         ObjectInputStream ois = new ObjectInputStream( 
-                                        new ByteArrayInputStream(  data ) );
+                                        new ByteArrayInputStream(data));
         Object o  = ois.readObject();
         ois.close();
         return o;
