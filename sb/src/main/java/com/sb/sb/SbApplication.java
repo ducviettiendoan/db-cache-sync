@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableAsync
+@ComponentScan({"com", "com.sb.sb"})
 @RestController
 @RequestMapping("/")
 public class SbApplication{
