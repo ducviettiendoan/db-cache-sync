@@ -59,7 +59,6 @@ public class CDBSync {
         List<Student> dbRes = studentService.getAllStudents();
         for (Student s: dbRes){
             try{
-                System.out.println(s.getName());
                 Object cacheS = template.opsForHash().get(STRING_KEY_PREFIX, "key"+s.getId());
                 if (Objects.isNull(cacheS)){
                     template.opsForHash().put(STRING_KEY_PREFIX, "key"+s.getId(), sdo.toString(s));
