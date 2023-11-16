@@ -64,11 +64,8 @@ public class CDBSync {
                 if (Objects.isNull(cacheS)){
                     template.opsForHash().put(STRING_KEY_PREFIX, "key"+s.getId(), sdo.toString(s));
                 }
-                else{
-                    System.out.println(((Student)cacheS).getId());
-                }
             }catch(Exception e){
-                if (Objects.nonNull(s)) {System.out.println(s.getId());}
+                if (Objects.nonNull(s)) {System.out.println("Error in processing id: "+s.getId());}
                 continue;
             }
         }
