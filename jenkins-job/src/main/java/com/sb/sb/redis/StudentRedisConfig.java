@@ -1,4 +1,4 @@
-package com.jk.jk.redis;
+package com.sb.sb.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;

@@ -1,4 +1,4 @@
-package com.jk.jk;
+package com.sb.sb;
 
 import java.io.IOException;
 import java.util.*;
@@ -6,6 +6,8 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +19,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.SDObject;
-import com.jk.jk.student.Student;
-import com.jk.jk.student.StudentService;
+import com.sb.sb.p_sync.CDBSync;
+import com.sb.sb.student.Student;
+import com.sb.sb.student.StudentService;
 
 import org.springframework.http.MediaType;
 
@@ -79,7 +82,12 @@ public class JKApplication {
 	// }
 
 	public static void main(String[] args) {
-		SpringApplication.run(JKApplication.class, args);
+		ConfigurableApplicationContext ctx = SpringApplication.run(JKApplication.class, args);
+		CDBSync cdb = ctx.getBean(CDBSync.class);
+		cdb.run();
+		System.out.println("Hello World");
+		ctx.close();
+
 	}
 
 }

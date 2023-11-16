@@ -1,4 +1,4 @@
-package com.jk.jk.redis;
+package com.sb.sb.redis;
 
 import java.io.Serializable;
 

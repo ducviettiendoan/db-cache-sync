@@ -1,4 +1,4 @@
-package com.jk.jk.student;
+package com.sb.sb.student;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;

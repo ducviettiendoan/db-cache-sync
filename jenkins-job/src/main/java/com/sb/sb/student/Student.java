@@ -1,4 +1,4 @@
-package com.jk.jk.student;
+package com.sb.sb.student;
 
 import java.io.Serializable;
 
