@@ -1,6 +1,6 @@
 import requests, json, sys, time
 
-url = "http://localhost:8090/student/add"
+url = "http://localhost:8085/student/add"
 
 headers = {
   'Content-Type': 'application/json'

@@ -1,0 +1,31 @@
+version: '2'
+networks:
+ kafka-net:
+   name: kafka-net
+   driver: bridge
+
+services:
+  sb_v1:
+    # depends_on:
+    # - "db"
+    # - "cache"
+    image: sb_v1
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=${DB_USERNAME}
+      - DB_NAME=student
+      - DB_PASSWORD=${DB_PASSWORD}
+      - KAFKA_BROKERCONNECT=kafka1:29092,kafka2:29093,kafka3:29094
+      - JVM_OPTS=-Xms32M -Xmx64M
+      - SERVER_SERVLET_CONTEXTPATH=/
+      - REDIS_HOST=cache
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    restart: on-failure:10
+    networks:
+      - kafka-net
+

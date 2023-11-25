@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka2-deploy
+spec:
+  selector:
+    matchLabels:
+      app: kafka2-deploy
+  template:
+    metadata:
+      labels:
+        app: kafka2-deploy
+    spec:
+      containers:
+      - name: kafka2-deploy
+        image: bitnami/kafka:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 29093
+        - containerPort: 9093
+        env: 
+        - name: KAFKA_BROKER_ID
+          value: "2"
+        # - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+        #   value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+        - name: KAFKA_CFG_LISTENERS
+          value: PLAINTEXT://:29093
+        - name: KAFKA_CFG_ADVERTISED_LISTENERS
+          value: PLAINTEXT://kafka2:29093
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: zookeeper.default.svc.cluster.local:2181
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: "PLAINTEXT"
+        - name: ALLOW_PLAINTEXT_LISTENER
+          value: "yes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka2
+spec:
+  selector:
+    app: kafka2-deploy
+  ports:
+  - port: 29093
+    targetPort: 29093

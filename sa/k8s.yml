@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-sa
+spec:
+  selector:
+    matchLabels:
+      app: k8s-sa
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: k8s-sa
+    spec:
+      # restartPolicy: Never
+      containers:
+      - name: k8s-sa
+        image: ducdoan123/sa_v1:v1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        ports:
+        - containerPort: 8085
+        env:
+        - name: DB_HOST
+          value: db.default.svc.cluster.local
+        - name: DB_PORT
+          value: '5432'
+        - name: DB_NAME
+          value: student
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASSWORD
+          value: ducdoanp0stgre
+        - name: KAFKA_BROKERCONNECT
+          value: kafka1:29092,kafka2:29093,kafka3:29094
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-sa-serv
+spec:
+  type: LoadBalancer
+  selector:
+    app: k8s-sa
+  ports:
+  - port: 8090
+    targetPort: 8090

@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableAsync
-@ComponentScan({"com", "com.sb.sb"})
+@ComponentScan({"com","com.sb.sb","com.student"})
 @RestController
 @RequestMapping("/")
 public class SbApplication{
