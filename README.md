@@ -34,7 +34,10 @@ Consider a microservice architecture with two separated services (A and B) shari
 ![Microservices Architecture](url_to_image2)
 
 ### 3. Improve availability and scalability
-By  
+By tracing and monitoring sb service when interacts with high amount of requests from external service (sa), one sb server could surely be overloaded. Hence, it optimize the workflow for this database cache sync simulation we want manage multiple services/docker containers with Kubernetes using Minikube open source. Using the LoadBalancer service to produce sb server replicas allows better availablity and scalability helping the Redis cache service sync up with Postgres better in real-time. All of the used resources are configured in **resource.yml**. Inside each service folder, there is also a **k8s.yml** file to create the server service (with provisioned resource) in the same K8s cluster. 
+
+![Write Through cache design](/images/wt.png)
+
 ### 4. Jenkins Pipeline Daily Automatic Sync (Additional)
 
 In addition to real-time sync-up for cache and database, a daily automated sync-up job ensures that the cache stays synchronized with the main data storage, even with failed Kafka messages. Prerequisites for setting up and running the automated job:
