@@ -37,13 +37,6 @@ spec:
           value: cache
         - name: KAFKA_BROKERCONNECT
           value: kafka1:29092,kafka2:29093,kafka3:29094
-        # - name: JVM_OPTS
-        #   value: -Xms32M -Xmx64M
-        # - name: SERVER_SERVLET_CONTEXTPATH
-        #   value: /
-        # - name: REDIS_HOST
-        #   value: cache
-      # hostNetwork: true
 
 # livenessProbe:
 #   httpGet:

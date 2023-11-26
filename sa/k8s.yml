@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: k8s-sa
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -19,7 +19,7 @@ spec:
         resources:
           limits:
             memory: "512Mi"
-            cpu: "1"
+            cpu: "500m"
         ports:
         - containerPort: 8085
         env:
