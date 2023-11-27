@@ -13,13 +13,16 @@ To test the cache design in Service B (sb):
 3. **Set up cache:**
    
 4. **Set up .env:**
+    - Install envsubst
     - In both /sa and /sb directories, create a .env file containing your Postgres username/password.
-    - Format: `DB_USERNAME=<your db username>` and `DB_PASSWORD=<your db password>`.
+    - Format: `export DB_USERNAME=<your db username>` and `export DB_PASSWORD=<your db password>`.
+    - `source .env` to export your env variable from envsubst
 
 5. **Run the app:**
-    - `cd sb`
-    - `mvn package`
-    - `mvn spring-boot:run`
+    - In the root dir run `source .env` and `envsubst < resource.yml| kubectl apply -f -`
+    - Run sb service: `cd sb` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
+    - Run sa service: `cd sa` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
+    - Run jenkins service: `cd jenkins` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
 
 ## Description and Motivation
 

@@ -24,9 +24,9 @@ spec:
         - name: POSTGRES_DB
           value: student
         - name: POSTGRES_USER
-          value: postgres
+          value: ${DB_USERNAME}
         - name: POSTGRES_PASSWORD
-          value: ducdoanp0stgre
+          value: ${DB_PASSWORD}
 ---
 kind: Service
 apiVersion: v1

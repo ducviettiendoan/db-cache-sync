@@ -29,9 +29,9 @@ spec:
         - name: DB_NAME
           value: student
         - name: DB_USER
-          value: postgres
+          value: ${DB_USERNAME}
         - name: DB_PASSWORD
-          value: ducdoanp0stgre
+          value: ${DB_PASSWORD}
         - name: REDIS_HOST
           value: cache
         - name: KAFKA_BROKERCONNECT
