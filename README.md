@@ -3,26 +3,39 @@
 A sample service dealing with various scenarios where cache and database synchronization is essential in real-time using background processes.
 
 ## Getting Started
+1. **Pre-installation:**
+    - Install minikube: https://minikube.sigs.k8s.io/docs/start/
+    - Install kubectl: https://kubernetes.io/docs/tasks/tools/
+    - Install Docker: https://docs.docker.com/engine/install/ 
+    **NOTE**: To run the entire project (including sa, sb, and jenkins) minikube containers always have to run 
 
-To test the cache design in Service B (sb):
-
-1. **Set up DB:**
+2. **Set up DB:**
    
-2. **Set up Kafka with Docker:**
+3. **Set up Kafka with Docker:**
    
-3. **Set up cache:**
+4. **Set up cache:**
    
-4. **Set up .env:**
+5. **Set up .env:**
     - Install envsubst
     - In both /sa and /sb directories, create a .env file containing your Postgres username/password.
     - Format: `export DB_USERNAME=<your db username>` and `export DB_PASSWORD=<your db password>`.
     - `source .env` to export your env variable from envsubst
 
-5. **Run the app:**
-    - In the root dir run `source .env` and `envsubst < resource.yml| kubectl apply -f -`
-    - Run sb service: `cd sb` then `envsubst < k8s.yml| kubectl apply -f -`
-    - Run sa service: `cd sa` then `envsubst < k8s.yml| kubectl apply -f -`
-    - Run jenkins service: `cd jenkins` then `envsubst < k8s.yml| kubectl apply -f -`
+6. **Run the app:**
+    - Create a configMap file for k8s secrtes in the root directory `env.yml` as follow
+    ```YAML
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+    name: env-config
+    data:
+    DB_USERNAME: <your Postgres username>
+    DB_PASSWORD: <your Postgres password> #required
+    ```
+    - Run resources service: `kubectl apply -f resource.yml`
+    - Run sb service: `cd sb` then `kubectl apply -f k8s.yml`
+    - Run sa service: `cd sa` then `kubectl apply -f k8s.yml`
+    - Run jenkins service: `cd jenkins` then `kubectl apply -f k8s.yml`
 
 ## Description and Motivation
 
@@ -66,11 +79,20 @@ In addition to real-time sync-up for cache and database, a daily automated sync-
 pipeline {
     agent any
     stages {
-        stage('Run Docker Compose') {
+        stage('Re-init resources and secrets') {
+            steps{
+                dir('path_to_workspace_folder') {
+                    // Run docker-compose up
+                    sh 'kubectl apply -f env.yml'
+                    sh 'kubectl apply -f resource.yml'
+                }
+            }
+        }
+        stage('Run k8s jenkins-job'){
             steps {
                 dir('path_to_jenkins_jobs_folder_in_workspace') {
                     // Run docker-compose up
-                    sh 'docker-compose up --build'
+                    sh 'kubectl apply -f k8s.yml'
                 }
             }
         }

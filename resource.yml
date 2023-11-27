@@ -20,9 +20,6 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5432
-        # envFrom:
-        # - configMapRef:
-        #     name: env-config
         env:
         - name: POSTGRES_DB
           value: student
