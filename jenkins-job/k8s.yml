@@ -67,9 +67,15 @@ spec:
     - name: DB_NAME
       value: student
     - name: DB_USER
-      value: ${DB_USERNAME}
+      valueFrom:
+        configMapKeyRef:
+          name: env-config
+          key: DB_USERNAME
     - name: DB_PASSWORD
-      value: ${DB_PASSWORD}
+      valueFrom:
+        configMapKeyRef:
+          name: env-config
+          key: DB_PASSWORD
     ports:
       - containerPort: 8099
   restartPolicy: OnFailure

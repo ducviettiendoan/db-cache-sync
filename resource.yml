@@ -20,13 +20,22 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5432
+        # envFrom:
+        # - configMapRef:
+        #     name: env-config
         env:
         - name: POSTGRES_DB
           value: student
         - name: POSTGRES_USER
-          value: ${DB_USERNAME}
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: DB_USERNAME
         - name: POSTGRES_PASSWORD
-          value: ${DB_PASSWORD}
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: DB_PASSWORD
 ---
 kind: Service
 apiVersion: v1
