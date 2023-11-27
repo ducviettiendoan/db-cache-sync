@@ -33,9 +33,9 @@ A sample service dealing with various scenarios where cache and database synchro
     DB_PASSWORD: <your Postgres password> #required
     ```
     - Run resources service: `kubectl apply -f resource.yml`
-    - Run sb service: `cd sb` then `kubectl apply -f k8s.yml`
-    - Run sa service: `cd sa` then `kubectl apply -f k8s.yml`
-    - Run jenkins service: `cd jenkins` then `kubectl apply -f k8s.yml`
+    - Run sb service: `cd sb/` then `kubectl apply -f k8s.yml`
+    - Run sa service: `cd sa/` then `kubectl apply -f k8s.yml`
+    - Run jenkins service: `cd jenkins/` then `kubectl apply -f k8s.yml`
 
 ## Description and Motivation
 
