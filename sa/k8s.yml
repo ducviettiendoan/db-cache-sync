@@ -21,7 +21,7 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8085
+        - containerPort: 8090
         env:
         - name: DB_HOST
           value: db.default.svc.cluster.local
