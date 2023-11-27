@@ -20,9 +20,9 @@ To test the cache design in Service B (sb):
 
 5. **Run the app:**
     - In the root dir run `source .env` and `envsubst < resource.yml| kubectl apply -f -`
-    - Run sb service: `cd sb` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
-    - Run sa service: `cd sa` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
-    - Run jenkins service: `cd jenkins` then `source .env` and `envsubst < k8s.yml| kubectl apply -f -`
+    - Run sb service: `cd sb` then `envsubst < k8s.yml| kubectl apply -f -`
+    - Run sa service: `cd sa` then `envsubst < k8s.yml| kubectl apply -f -`
+    - Run jenkins service: `cd jenkins` then `envsubst < k8s.yml| kubectl apply -f -`
 
 ## Description and Motivation
 
