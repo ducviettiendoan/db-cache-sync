@@ -9,29 +9,27 @@ A sample service dealing with various scenarios where cache and database synchro
     - Install Docker: https://docs.docker.com/engine/install/ 
     **NOTE**: To run the entire project (including sa, sb, and jenkins) minikube containers always have to run 
 
-2. **Set up DB:**
-   
-3. **Set up Kafka with Docker:**
-   
-4. **Set up cache:**
-   
-5. **Set up .env:**
-    - Install envsubst
-    - In both /sa and /sb directories, create a .env file containing your Postgres username/password.
-    - Format: `export DB_USERNAME=<your db username>` and `export DB_PASSWORD=<your db password>`.
-    - `source .env` to export your env variable from envsubst
+2. **Set up minikube:**
+    - Once minikube and Docker are installed, start the minikube container with `minikube start --memory 4096 --cpus 2`. You can change the amount of resources but 4Gb memory and 2 CPUs core are the least requirement.
+    - Tunnel: Open a new terminal and type `minikube tunnel`. This helps expose the external IP for created service in k8s to set hostname to `localhost` as well as exposing the port of the service.
+    - Monitoring cluster pods: If you are using Vscode, install kubernetes extension. Once installed, open the extension and under "Cluster" create a new cluster. If minikube is installed, there should be an option to create new Cluster with "Minikube local cluster". Restart and reopen Vscode then you should see minikube dropdown in the "Cluster" section. 
 
-6. **Run the app:**
+
+5. **Set up K8s Config Map:**
     - Create a configMap file for k8s secrtes in the root directory `env.yml` as follow
     ```YAML
     apiVersion: v1
     kind: ConfigMap
     metadata:
-    name: env-config
+        name: env-config
     data:
-    DB_USERNAME: <your Postgres username>
-    DB_PASSWORD: <your Postgres password> #required
+        DB_USERNAME: <your Postgres username>
+        DB_PASSWORD: <your Postgres password> #required
     ```
+
+6. **Run the app:**
+    - Make sure Docker engine is running
+    - Apply configMap to get secrets: `kubectl apply -f env.yml`
     - Run resources service: `kubectl apply -f resource.yml`
     - Run sb service: `cd sb/` then `kubectl apply -f k8s.yml`
     - Run sa service: `cd sa/` then `kubectl apply -f k8s.yml`
@@ -69,7 +67,8 @@ In addition to real-time sync-up for cache and database, a daily automated sync-
 
 - Install Jenkins on your local machine.
 - Ensure Docker engine (or Docker Desktop) is installed.
-- In the terminal or PowerShell, navigate to the `workspace` directory where Jenkins is installed (e.g., `~/.jenkins/workspace`). Clone the project: `git clone https://github.com/ducviettiendoan/db-cache-sync.git`. The main directory needed is `/jenkins-job/`.
+- In the terminal or PowerShell, navigate to the `workspace` directory where Jenkins is installed (e.g., `~/.jenkins/workspace`). Clone the project: `git clone https://github.com/ducviettiendoan/db-cache-sync.git`. The main directory needed is `/jenkins-job/`. 
+**Note:** Make sure Jenkins is running on port 8080.
 
 - Open Jenkins (`localhost:8080`), go to `Manage Jenkins` > `Plugins` to install the Docker & Docker Compose Build Step Plugin.
 
