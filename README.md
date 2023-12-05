@@ -1,4 +1,4 @@
-# db-cache-sync (to be updated)
+# db-cache-sync 
 
 A sample service dealing with various scenarios where cache and database synchronization is essential in real-time using background processes.
 ## Description
