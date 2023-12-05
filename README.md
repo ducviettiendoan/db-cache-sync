@@ -1,6 +1,14 @@
 # db-cache-sync (to be updated)
 
 A sample service dealing with various scenarios where cache and database synchronization is essential in real-time using background processes.
+## Description
+This project has 3 services in total. For now sb and sa service only support GET and POST method. 
+### Service sb
+This is the central service which has its own cache and the goal is to sync sb's cache with the PostgresDB. Since it's the central service (meaning other service such as sa could  depend on it), we add replications to sb. The default number of replication is 2, modification could be made in the /sb/k8s.yml file. 
+### Service sa
+This service use to interrupt the sync state of sb's cache by interact directly to the PostgresDB. To keep the sync state for sb (real-time) we use a Kafka background process to publish message and let sb receive a message with the updated information.
+### Service jenkins-job
+A Jenkins pipeline use this service to automatically check for any out-of-sync data between the main datasource and sb's cache. This process could be scheduled at a specific time.
 
 ## Getting Started
 1. **Pre-installation:**
@@ -100,7 +108,6 @@ pipeline {
 ```
 - Save your Jenkins job and ready to build the job. You could either manually run the job or set up the job to run periodically (For example in build periodically section, `H H * * *` should run the job everyday at a random time. Refer to this docs for more information: https://www.cloudbees.com/blog/how-to-schedule-a-jenkins-job). 
 - Before running jenkins-job, make sure that sb is running in your Docker. You can build the Jenkins job now.
-## Service sa
 
-## Service sb
-
+### 5. Additional util file
+To save somtime for testing, there is a `.py` file to send multiple requests to either sa or sb you could play around with. 

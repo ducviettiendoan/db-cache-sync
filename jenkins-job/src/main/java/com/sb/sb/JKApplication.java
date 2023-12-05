@@ -87,7 +87,6 @@ public class JKApplication {
 		cdb.run();
 		System.out.println("Hello World");
 		ctx.close();
-
 	}
 
 }

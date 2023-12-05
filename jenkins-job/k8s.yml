@@ -29,6 +29,9 @@ spec:
         configMapKeyRef:
           name: env-config
           key: DB_PASSWORD
+    command: ["/bin/sh"]
+    args: [-c "echo Jenkins job finish running at $(date) | mail doan_d1@denison.edu" ]
+
     ports:
       - containerPort: 8099
   restartPolicy: OnFailure
