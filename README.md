@@ -47,13 +47,13 @@ A Jenkins pipeline use this service to automatically check for any out-of-sync d
 
 ### 1. Single Service: Lazy load + write through = significantly improving read operations
 
-![Lazy Load + Write Through](url_to_image1)
+![Lazy Load + Write Through](/images/single-service-diagram.png)
 
 ### 2. Multiple Services: 
 
-Consider a microservice architecture with two separated services (A and B) sharing the same DB. A common challenge arises when designing systems: How can service A's cache sync up with the shared DB if service B modifies it? Direct modification of service A's cache by service B is not ideal due to the key principles of microservice architecture. One solution is to use a separate service to establish communication when the database undergoes any modification. Kafka is a suitable tool for real-time data synchronization.
+Consider a microservice architecture with two separated services (A and B) sharing the same DB. A common challenge arises when designing systems: How can service A's cache sync up with the shared DB if service B modifies it? Direct modification of service A's cache by service B is not ideal due to the key principles of microservice architecture is decoupling. One solution is to use a separate service to establish communication when the database undergoes any modification. Hence, Kafka is a suitable tool for real-time data synchronization.
 
-![Microservices Architecture](url_to_image2)
+![Microservices Architecture](/images/multiple-service-diagram.png)
 
 ### 3. Improve availability and scalability
 By tracing and monitoring sb service when interacts with high amount of requests from external service (sa), one sb server could surely be overloaded. Hence, it optimize the workflow for this database cache sync simulation we want manage multiple services/docker containers with Kubernetes using Minikube open source. Using the LoadBalancer service to produce sb server replicas allows better availablity and scalability helping the Redis cache service sync up with Postgres better in real-time. All of the used resources are configured in **resource.yml**. Inside each service folder, there is also a **k8s.yml** file to create the server service (with provisioned resource) in the same K8s cluster. 
