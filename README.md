@@ -69,7 +69,7 @@ By tracing and monitoring sb service when it interacts with high amount of reque
 
 ![Jenkins scheduled syncing job](/images/jenkins.png)
 
-### 4. Jenkins Pipeline Daily Automatic Sync (Additional)
+### 4. Jenkins Pipeline Scheduled Automatic Sync (Additional)
 
 In addition to real-time sync-up for cache and database, a daily automated sync-up job ensures that the cache stays synchronized with the main data storage, even with failed Kafka messages. Prerequisites for setting up and running the automated job:
 
