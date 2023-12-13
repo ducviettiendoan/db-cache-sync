@@ -2,13 +2,13 @@
 
 A sample service dealing with various scenarios where cache and database synchronization is essential in real-time using background processes.
 ## Description
-This project has 3 services in total. For now sb and sa service only support GET and POST method. 
+This project has 3 services in total. For now, sb and sa services only support GET and POST methods. 
 ### Service sb
-This is the central service which has its own cache and the goal is to sync sb's cache with the PostgresDB. Since it's the central service (meaning other service such as sa could  depend on it), we add replications to sb. The default number of replication is 2, modification could be made in the /sb/k8s.yml file. 
+This is the central service which has its own cache, and the goal is to sync sb's cache with the PostgresDB. Since it's the central service (meaning other services such as sa could  depend on it), we add replications to sb. The default number of replications is 2, but modifications can be made in the /sb/k8s.yml file. 
 ### Service sa
-This service use to interrupt the sync state of sb's cache by interact directly to the PostgresDB. To keep the sync state for sb (real-time) we use a Kafka background process to publish message and let sb receive a message with the updated information.
+This service is used to interrupt the sync state of sb's cache by interacting directly to the PostgresDB. To keep the sync state for sb (real-time) we use a Kafka background process to publish messages and let sb receive a message with the updated information.
 ### Service jenkins-job
-A Jenkins pipeline use this service to automatically check for any out-of-sync data between the main datasource and sb's cache. This process could be scheduled at a specific time.
+A Jenkins pipeline uses this service to automatically check for any out-of-sync data between the main data source and sb's cache. This process could be scheduled at a specific time.
 
 ## Getting Started
 1. **Pre-installation:**
@@ -18,8 +18,8 @@ A Jenkins pipeline use this service to automatically check for any out-of-sync d
     **NOTE**: To run the entire project (including sa, sb, and jenkins) minikube containers always have to run 
 
 2. **Set up minikube:**
-    - Once minikube and Docker are installed, start the minikube container with `minikube start --memory 4096 --cpus 2`. You can change the amount of resources but 4Gb memory and 2 CPUs core are the least requirement.
-    - Tunnel: Open a new terminal and type `minikube tunnel`. This helps expose the external IP for created service in k8s to set hostname to `localhost` as well as exposing the port of the service.
+    - Once minikube and Docker are installed, start the minikube container with `minikube start --memory 4096 --cpus 2`. You can change the number of resources, but 4Gb memory and 2 CPU cores are the least required.
+    - Tunnel: Open a new terminal and type `minikube tunnel`. This helps expose the external IP for the created service in k8s to set the hostname to `localhost` and expose the service's port.
     - Monitoring cluster pods: If you are using Vscode, install kubernetes extension. Once installed, open the extension and under "Cluster" create a new cluster. If minikube is installed, there should be an option to create new Cluster with "Minikube local cluster". Restart and reopen Vscode then you should see minikube dropdown in the "Cluster" section. 
 
 
@@ -45,18 +45,18 @@ A Jenkins pipeline use this service to automatically check for any out-of-sync d
 
 ## Description and Motivation
 
-### 1. Single Service: Lazy load + write through = significantly improving read operations
+### 1. Single Service: Lazy load + write-through = significantly improving read operations
 
 ![Lazy Load + Write Through](/images/single-service-diagram.png)
 
 ### 2. Multiple Services: 
 
-Consider a microservice architecture with two separated services (A and B) sharing the same DB. A common challenge arises when designing systems: How can service A's cache sync up with the shared DB if service B modifies it? Direct modification of service A's cache by service B is not ideal due to the key principles of microservice architecture is decoupling. One solution is to use a separate service to establish communication when the database undergoes any modification. Hence, Kafka is a suitable tool for real-time data synchronization.
+Consider a microservice architecture with two separate services (A and B) sharing the same DB. A common challenge arises when designing systems: How can service A's cache sync up with the shared DB if service B modifies it? Direct modification of service A's cache by service B is not ideal due to the key principle of microservice architecture is decoupling. One solution is to use a separate service to establish communication when the database undergoes any modification. Hence, Kafka is a suitable tool for real-time data synchronization.
 
 ![Microservices Architecture](/images/multiple-service-diagram.png)
 
 ### 3. Improve availability and scalability
-By tracing and monitoring sb service when interacts with high amount of requests from external service (sa), one sb server could surely be overloaded. Hence, it optimize the workflow for this database cache sync simulation we want manage multiple services/docker containers with Kubernetes using Minikube open source. Using the LoadBalancer service to produce sb server replicas allows better availablity and scalability helping the Redis cache service sync up with Postgres better in real-time. All of the used resources are configured in **resource.yml**. Inside each service folder, there is also a **k8s.yml** file to create the server service (with provisioned resource) in the same K8s cluster. 
+By tracing and monitoring sb service when it interacts with high amount of requests from external service (sa), one sb server could surely be overloaded. Hence, to optimize the workflow for this database cache sync simulation, we want to manage multiple services/docker containers with Kubernetes using Minikube open source. Using the LoadBalancer service to manage workloads of sb server replicas allows better availablity and scalability, helping the Redis cache service sync up with Postgres better in real-time. All of the used resources are configured in **resource.yml**. Inside each service folder, there is also a **k8s.yml** file to create the server service (with provisioned resource) in the same K8s cluster. 
 
 **WRITE THROUGH CACHE DESIGN**
 ![Write Through cache design](/images/wt.png)
@@ -106,8 +106,8 @@ pipeline {
     }
 }
 ```
-- Save your Jenkins job and ready to build the job. You could either manually run the job or set up the job to run periodically (For example in build periodically section, `H H * * *` should run the job everyday at a random time. Refer to this docs for more information: https://www.cloudbees.com/blog/how-to-schedule-a-jenkins-job). 
+- Save your Jenkins job and be ready to build the job. You could either manually run the job or set up the job to run periodically (For example, in the build periodically section, `H H * * *` should run the job every day at a random time. Refer to this docs for more information: https://www.cloudbees.com/blog/how-to-schedule-a-jenkins-job). 
 - Before running jenkins-job, make sure that sb is running in your Docker. You can build the Jenkins job now.
 
 ### 5. Additional util file
-To save somtime for testing, there is a `.py` file to send multiple requests to either sa or sb you could play around with. 
+To save some time for testing, there is a `.py` file to send multiple requests to either SA or SB you could play around with. 
